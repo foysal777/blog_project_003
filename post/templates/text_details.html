@@ -1,0 +1,55 @@
+{% extends "base.html" %}  
+{% load crispy_forms_tags %}
+
+
+{% block css_add %}
+<style>
+    .btn-success:hover {
+        background-color: #ff0004; 
+    }
+
+    body{
+
+        background-color: rgb(255, 255, 255);
+       } 
+</style>
+{% endblock %}
+<h1 class="text-center" >I am Text details page</h1>
+{% block   main %}
+<section> 
+<div class="card border-success  mb-3 col-12" style="max-width: 50%; height: 50%;" >
+    <div class="card-header text-center fw-bold text-light" style="background-color: rgb(39, 91, 51)">
+      {{ post.title }}
+    </div>
+    <div class="card-body text-info">
+      <img src="{{post.image.url}}" class="card-img-top" alt="Not Found" width="50%">
+      <h5 class="card-title text-dark mt-3"> {{ post.content }} </h5>
+      <p class="text-primary fs-4">Author: {{ post.authors.username }}</p>
+      <br />
+      <p class="text-dark fs-4">
+        Category:
+        {% for cat in post.categorys.all %}
+          <button class="btn btn-warning btn-sm g-2">{{ cat.name }}</button>
+ 
+          {% endfor %}
+        </section>
+
+        <div class="card m-2">
+          <h5 class="p-3">Total Comments : {{comments | length}}</h5>
+          {% for i in comments %}
+        <div class="card-body border m-2">
+              <p><b>{{i.name}}</b> {{i.show_time}}</p>
+              <p>{{i.comment_here}}</p>
+          </div>
+          {% endfor %}
+      </div>
+          <div class="p-3">
+            <h1>Add Comment </h1>
+            <form  method="post">
+                {% csrf_token %}                 
+                {{comment_Form | crispy}}                  
+                <button  class="btn btn-success"  type="submit"> Submit </button>
+            </form>       
+            <br><br>
+         </div>
+{% endblock  %}
